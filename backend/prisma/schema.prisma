@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id            Int      @id @default(autoincrement())
+  nome          String
+  telefone      String   @unique
+  senha         String
+  tipo          TipoUsuario
+  especialidade String?
+  anoInternato  Int?
+  createdAt     DateTime @default(now())
+
+  atendimentosExternos AtendimentoExterno[]
+  atendimentosInternos AtendimentoInterno[]
+  intercorrencias      Intercorrencia[]
+}
+
+enum TipoUsuario {
+  ADMIN
+  STAFF
+  RESIDENTE
+  INTERNO
+  ENFERMAGEM
+}
+
+model AtendimentoExterno {
+  id             Int      @id @default(autoincrement())
+  dataHora       DateTime @default(now())
+  nomePaciente   String
+  prontuario     String
+  queixa         String
+  risco          String
+  onco           Boolean  @default(false)
+  hemato         Boolean  @default(false)
+  outros         Boolean  @default(false)
+  atendidoPorId  Int?
+  atendidoPor    Usuario? @relation(fields: [atendidoPorId], references: [id])
+  finalizado     Boolean  @default(false)
+}
+
+model AtendimentoInterno {
+  id              Int      @id @default(autoincrement())
+  dataHora        DateTime @default(now())
+  solicitanteId   Int
+  solicitante     Usuario  @relation(fields: [solicitanteId], references: [id])
+  setor           String
+  nomePaciente    String
+  prontuario      String
+  localizacao     String
+  queixa          String
+  pcr             Boolean  @default(false)
+}
+
+model Intercorrencia {
+  id             Int      @id @default(autoincrement())
+  dataHora       DateTime @default(now())
+  solicitanteId  Int
+  solicitante    Usuario  @relation(fields: [solicitanteId], references: [id])
+  setor          String
+  descricao      String
+}
