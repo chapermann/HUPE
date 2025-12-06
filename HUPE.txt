@@ -1,0 +1,26 @@
+HUPE/
+├── backend/
+│   ├── prisma/
+│   │   └── schema.prisma
+│   ├── src/
+│   │   └── server.ts
+│   ├── package.json
+│   └── .env
+├── frontend/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── pages/
+│   │   │   ├── Login.tsx
+│   │   │   ├── Dashboard.tsx
+│   │   │   ├── CadastroPlantonista.tsx
+│   │   │   ├── AtendimentoExterno.tsx
+│   │   │   ├── AtendimentoInterno.tsx
+│   │   │   ├── Intercorrencia.tsx
+│   │   │   └── Confirmacao.tsx
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── package.json
+│   └── vite.config.ts
+├── mobile/ (opcional – mesmo código do frontend)
+└── README.md
