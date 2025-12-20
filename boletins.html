@@ -7,11 +7,52 @@
     <link rel="stylesheet" href="styles.css"> <!-- Incluindo o CSS comum -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        /* Estilos específicos para o boletins.html */
+        .module {
+            max-width: 600px; /* Limitar a largura do módulo */
+            margin: 20px auto; /* Centralizar o módulo na página */
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center; /* Centralizar títulos */
+        }
+
+        button {
+            width: 100%; /* Botão ocupa toda a largura */
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px; /* Margem superior para o botão */
+        }
+
+        button:hover {
+            background-color: #218838; /* Efeito hover no botão */
+        }
+
+        #resultado {
+            margin-top: 20px; /* Margem superior para o resultado */
+            text-align: left; /* Alinhar texto à esquerda */
+        }
+    </style>
 </head>
 <body>
 
 <h1>Boletins de Plantonistas e Atendimentos</h1>
 <div class="module">
+    <h2>Selecionar Tipo de Boletim</h2>
+    <select id="tipoBoletim" onchange="atualizarBoletim()">
+        <option value="12h">Boletim de 12h</option>
+        <option value="24h">Boletim de 24h</option>
+    </select>
+
     <h2>Ver Dados</h2>
     <button onclick="verBoletimPlantonistas()">Boletim de Plantonistas</button>
     <button onclick="verBoletimAtendimentos()">Boletim de Atendimentos do Dia</button>
@@ -24,14 +65,20 @@
     <button onclick="exportarParaExcel()">Exportar como Excel</button>
 </div>
 
-<div id="resultado" style="margin-top: 20px;"></div>
+<div id="resultado"></div>
 
 <script>
     // Simulação de dados (substitua pelos seus dados reais)
-    const listaPlantonistas = [
-        { nome: "João Silva", turno: "12h", dia: "2025-12-20" },
-        { nome: "Maria Oliveira", turno: "24h", dia: "2025-12-20" }
-    ];
+    const listaPlantonistas = {
+        "12h": [
+            { nome: "João Silva", turno: "12h", dia: "2025-12-20" },
+            { nome: "Maria Oliveira", turno: "12h", dia: "2025-12-20" }
+        ],
+        "24h": [
+            { nome: "Carlos Santos", turno: "24h", dia: "2025-12-20" },
+            { nome: "Ana Lima", turno: "24h", dia: "2025-12-20" }
+        ]
+    };
 
     const listaAtendimentos = [
         { data: "2025-12-20", paciente: "Carlos Souza", queixa: "Dor abdominal" },
@@ -42,10 +89,15 @@
         { data: "2025-12-20", paciente: "Pedro Santos", descricao: "Hipertensão" }
     ];
 
-    function verBoletimPlantonistas() {
+    function atualizarBoletim() {
+        const tipo = document.getElementById('tipoBoletim').value;
+        verBoletimPlantonistas(tipo);
+    }
+
+    function verBoletimPlantonistas(tipo) {
         const resultadoDiv = document.getElementById('resultado');
-        resultadoDiv.innerHTML = '<h3>Boletim de Plantonistas</h3>' + 
-            listaPlantonistas.map(p => `<p>${p.nome} - Turno: ${p.turno} - Dia: ${p.dia}</p>`).join('');
+        resultadoDiv.innerHTML = '<h3>Boletim de Plantonistas (' + tipo + ')</h3>' + 
+            listaPlantonistas[tipo].map(p => `<p>${p.nome} - Turno: ${p.turno} - Dia: ${p.dia}</p>`).join('');
     }
 
     function verBoletimAtendimentos() {
