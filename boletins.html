@@ -44,6 +44,51 @@
 
 <h1>Módulo de Boletins Diários</h1>
 <div class="module">
+    <button id="gerarBoletim">Gerar Boletim</button>
+    <div id="resultadoBoletim"></div>
+    <button onclick="location.href='index.html'">Voltar</button>
+</div>
+
+<script>
+    document.getElementById('gerarBoletim').addEventListener('click', function() {
+        const plantonistas = JSON.parse(localStorage.getItem('plantonistas')) || [];
+        const atendimentos = JSON.parse(localStorage.getItem('atendimentos')) || [];
+        let resultado = 'Boletim Diário:\n\n';
+
+        resultado += 'Plantonistas:\n';
+        if (plantonistas.length === 0) {
+            resultado += 'Nenhum plantonista cadastrado.\n';
+        } else {
+            plantonistas.forEach(p => {
+                resultado += `${p.tipo}: ${p.nome}, Telefone: ${p.telefone}, Ano do Internato: ${p.anoInternato}, Dia: ${p.dia}, Turno: ${p.turno}\n`;
+            });
+        }
+
+        resultado += '\nAtendimentos:\n';
+        if (atendimentos.length === 0) {
+            resultado += 'Nenhum atendimento solicitado.\n';
+        } else {
+            atendimentos.forEach(a => {
+                resultado += `${a.pacienteTipo}: ${a.nomePaciente}, Prontuário: ${a.prontuario}, Queixa: ${a.queixa}\n`;
+            });
+        }
+
+        document.getElementById('resultadoBoletim').innerText = resultado;
+    });
+</script>
+
+</body>
+</html>
+        #resultadoBoletim {
+            margin-top: 20px;
+            white-space: pre-wrap; /* Para manter formatação no texto */
+        }
+    </style>
+</head>
+<body>
+
+<h1>Módulo de Boletins Diários</h1>
+<div class="module">
     <label for="tipoBoletim">Selecione o tipo de boletim:</label>
     <select id="tipoBoletim">
         <option value="plantonistas">Boletim diário dos plantonistas do Dia</option>
