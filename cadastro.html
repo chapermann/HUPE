@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro dos Plantonistas</title>
-    <style>
-        /* Estilos omitidos para brevidade */
-    </style>
+    <link rel="stylesheet" href="styles.css"> <!-- Incluindo o CSS comum -->
 </head>
 <body>
 
@@ -23,14 +21,25 @@
         <label for="nome">Nome:</label>
         <input type="text" id="nome" required>
 
-        <label for="telefone">Telefone (DDD):</label>
-        <input type="tel" id="telefone" required>
+        <label for="telefone">Telefone (DD-XXXX-XXXXX):</label>
+        <input type="text" id="telefone" pattern="^\d{2}-\d{4}-\d{5}$" placeholder="Ex: 11-9876-54321" required>
 
-        <label for="anoInternato">Ano do Internato (se aplicável):</label>
-        <input type="text" id="anoInternato">
+        <label for="anoInternato">Ano do Internato:</label>
+        <select id="anoInternato" required>
+            <option value="5o Ano">5o Ano</option>
+            <option value="6o Ano">6o Ano</option>
+        </select>
 
         <label for="dia">Dia de Plantão:</label>
-        <input type="text" id="dia" required>
+        <select id="dia" required>
+            <option value="segunda">Segunda-feira</option>
+            <option value="terca">Terça-feira</option>
+            <option value="quarta">Quarta-feira</option>
+            <option value="quinta">Quinta-feira</option>
+            <option value="sexta">Sexta-feira</option>
+            <option value="sabado">Sábado</option>
+            <option value="domingo">Domingo</option>
+        </select>
 
         <label for="turno">Turno:</label>
         <select id="turno" required>
