@@ -51,6 +51,7 @@
 <body>
 
 <h1>Boletins de Plantonistas e Atendimentos</h1>
+
 <div class="module">
     <h2>Boletim de Plantonistas</h2>
     
@@ -74,16 +75,44 @@
     </div>
 
     <button onclick="gerarBoletimPlantonistas()">Produzir Boletim</button>
-
-    <h2>Boletim de Atendimentos do Dia</h2>
-    <button onclick="gerarBoletimAtendimentos()">Produzir Boletim</button>
-
-    <h2>Boletim de Intercorrências</h2>
-    <button onclick="gerarBoletimIntercorrencias()">Produzir Boletim</button>
-
-    <div class="spacer"></div>
-    <button onclick="voltar()">Voltar ao Index</button> <!-- Botão Voltar -->
 </div>
+
+<div class="module">
+    <h2>Boletim de Atendimentos do Dia</h2>
+    
+    <div>
+        <label for="formatoAtendimentos">Formato de Exibição:</label>
+        <select id="formatoAtendimentos">
+            <option value="tela">Tela</option>
+            <option value="pdf">PDF</option>
+            <option value="txt">TXT</option>
+            <option value="csv">CSV</option>
+            <option value="excel">Excel</option>
+        </select>
+    </div>
+
+    <button onclick="gerarBoletimAtendimentos()">Produzir Boletim</button>
+</div>
+
+<div class="module">
+    <h2>Boletim de Intercorrências</h2>
+    
+    <div>
+        <label for="formatoIntercorrencias">Formato de Exibição:</label>
+        <select id="formatoIntercorrencias">
+            <option value="tela">Tela</option>
+            <option value="pdf">PDF</option>
+            <option value="txt">TXT</option>
+            <option value="csv">CSV</option>
+            <option value="excel">Excel</option>
+        </select>
+    </div>
+
+    <button onclick="gerarBoletimIntercorrencias()">Produzir Boletim</button>
+</div>
+
+<div class="spacer"></div>
+<button onclick="voltar()">Voltar ao Index</button> <!-- Botão Voltar -->
 
 <div id="resultado"></div>
 
@@ -135,10 +164,10 @@
     }
 
     function gerarBoletimAtendimentos() {
+        const formato = document.getElementById('formatoAtendimentos').value;
         const atendimentos = obterDadosAtendimentos();
-        const formato = prompt("Escolha o formato de exibição:\n1. Tela\n2. PDF\n3. TXT\n4. CSV\n5. Excel");
 
-        if (formato === "1") {
+        if (formato === "tela") {
             const resultadoDiv = document.getElementById('resultado');
             resultadoDiv.innerHTML = '<h3>Boletim de Atendimentos do Dia</h3>' + 
                 atendimentos.map(a => `<p>Data: ${a.data}, Paciente: ${a.paciente}, Queixa: ${a.queixa}</p>`).join('');
@@ -147,16 +176,16 @@
             const dados = atendimentos.map(a => ({ data: a.data, paciente: a.paciente, queixa: a.queixa }));
 
             switch (formato) {
-                case "2":
+                case "pdf":
                     exportarParaPDF(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Atendimentos');
                     break;
-                case "3":
+                case "txt":
                     exportarParaTXT(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Atendimentos');
                     break;
-                case "4":
+                case "csv":
                     exportarParaCSV(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Atendimentos');
                     break;
-                case "5":
+                case "excel":
                     exportarParaExcel(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Atendimentos');
                     break;
                 default:
@@ -166,10 +195,10 @@
     }
 
     function gerarBoletimIntercorrencias() {
+        const formato = document.getElementById('formatoIntercorrencias').value;
         const atendimentos = obterDadosAtendimentos().filter(a => a.tipo === 'intercorrencia');
-        const formato = prompt("Escolha o formato de exibição:\n1. Tela\n2. PDF\n3. TXT\n4. CSV\n5. Excel");
 
-        if (formato === "1") {
+        if (formato === "tela") {
             const resultadoDiv = document.getElementById('resultado');
             resultadoDiv.innerHTML = '<h3>Boletim de Intercorrências</h3>' + 
                 atendimentos.map(i => `<p>Data: ${i.data}, Paciente: ${i.paciente}, Descrição: ${i.queixa}</p>`).join('');
@@ -178,16 +207,16 @@
             const dados = atendimentos.map(i => ({ data: i.data, paciente: i.paciente, queixa: i.queixa }));
 
             switch (formato) {
-                case "2":
+                case "pdf":
                     exportarParaPDF(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Intercorrências');
                     break;
-                case "3":
+                case "txt":
                     exportarParaTXT(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Intercorrências');
                     break;
-                case "4":
+                case "csv":
                     exportarParaCSV(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Intercorrências');
                     break;
-                case "5":
+                case "excel":
                     exportarParaExcel(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Intercorrências');
                     break;
                 default:
