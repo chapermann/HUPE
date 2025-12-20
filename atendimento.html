@@ -43,10 +43,6 @@
         button:hover {
             background-color: #218838; /* Efeito hover no botão */
         }
-
-        h2 {
-            margin-top: 20px; /* Margem superior para o título da lista */
-        }
     </style>
 </head>
 <body>
@@ -76,22 +72,9 @@
         <button type="submit">Solicitar Atendimento</button>
     </form>
     <button onclick="location.href='index.html'">Voltar</button>
-
-    <h2>Atendimentos Solicitados:</h2>
-    <div id="listaAtendimentos"></div>
 </div>
 
 <script>
-    function atualizarLista() {
-        const lista = JSON.parse(localStorage.getItem('atendimentos')) || [];
-        const listaDiv = document.getElementById('listaAtendimentos');
-        listaDiv.innerHTML = lista.map(a => `<p>${a.pacienteTipo}: ${a.nomePaciente}, Prontuário: ${a.prontuario}, Queixa: ${a.queixa}, Responsável: ${a.responsavel}</p>`).join('');
-    }
-
-    window.onload = function() {
-        atualizarLista();
-    };
-
     document.getElementById('atendimentoForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const pacienteTipo = document.getElementById('pacienteTipo').value;
@@ -105,7 +88,7 @@
         lista.push(atendimento);
         localStorage.setItem('atendimentos', JSON.stringify(lista));
 
-        atualizarLista();
+        alert("Atendimento solicitado com sucesso!"); // Mensagem de confirmação
         document.getElementById('atendimentoForm').reset();
     });
 </script>
