@@ -47,23 +47,27 @@
 
 <h1>Boletins de Plantonistas e Atendimentos</h1>
 <div class="module">
-    <h2>Selecionar Tipo de Boletim</h2>
-    <select id="tipoBoletim" onchange="atualizarBoletim()">
-        <option value="12h">Boletim de 12h</option>
-        <option value="24h">Boletim de 24h</option>
-    </select>
+    <h2>Boletim de Plantonistas</h2>
+    <button onclick="gerarBoletimPlantonistas('tela')">Ver na Tela</button>
+    <button onclick="gerarBoletimPlantonistas('pdf')">Gerar PDF</button>
+    <button onclick="gerarBoletimPlantonistas('txt')">Gerar TXT</button>
+    <button onclick="gerarBoletimPlantonistas('csv')">Gerar CSV</button>
+    <button onclick="gerarBoletimPlantonistas('excel')">Gerar Excel</button>
 
-    <h2>Ver Dados</h2>
-    <button onclick="verBoletimPlantonistas()">Boletim de Plantonistas</button>
-    <button onclick="verBoletimAtendimentos()">Boletim de Atendimentos do Dia</button>
-    <button onclick="verBoletimIntercorrencias()">Boletim de Intercorrências</button>
+    <h2>Boletim de Atendimentos do Dia</h2>
+    <button onclick="gerarBoletimAtendimentos('tela')">Ver na Tela</button>
+    <button onclick="gerarBoletimAtendimentos('pdf')">Gerar PDF</button>
+    <button onclick="gerarBoletimAtendimentos('txt')">Gerar TXT</button>
+    <button onclick="gerarBoletimAtendimentos('csv')">Gerar CSV</button>
+    <button onclick="gerarBoletimAtendimentos('excel')">Gerar Excel</button>
 
-    <h2>Exportar Dados</h2>
-    <button onclick="exportarParaPDF()">Exportar como PDF</button>
-    <button onclick="exportarParaTXT()">Exportar como TXT</button>
-    <button onclick="exportarParaCSV()">Exportar como CSV</button>
-    <button onclick="exportarParaExcel()">Exportar como Excel</button>
-    
+    <h2>Boletim de Intercorrências</h2>
+    <button onclick="gerarBoletimIntercorrencias('tela')">Ver na Tela</button>
+    <button onclick="gerarBoletimIntercorrencias('pdf')">Gerar PDF</button>
+    <button onclick="gerarBoletimIntercorrencias('txt')">Gerar TXT</button>
+    <button onclick="gerarBoletimIntercorrencias('csv')">Gerar CSV</button>
+    <button onclick="gerarBoletimIntercorrencias('excel')">Gerar Excel</button>
+
     <button onclick="voltar()">Voltar</button> <!-- Botão Voltar -->
 </div>
 
@@ -84,31 +88,89 @@
         window.location.href = 'index.html'; // Redireciona para index.html
     }
 
-    function atualizarBoletim() {
-        const tipo = document.getElementById('tipoBoletim').value;
-        verBoletimPlantonistas(tipo);
-    }
-
-    function verBoletimPlantonistas(tipo) {
+    function gerarBoletimPlantonistas(acao) {
         const plantonistas = obterDadosPlantonistas();
-        const resultadoDiv = document.getElementById('resultado');
-        resultadoDiv.innerHTML = '<h3>Boletim de Plantonistas (' + tipo + ')</h3>' + 
-            plantonistas.filter(p => p.turno === tipo).map(p => `<p>${p.nome} - Turno: ${p.turno} - Dia: ${p.dia}</p>`).join('');
+        const tipo = document.getElementById('tipoBoletim').value;
+        
+        if (acao === 'tela') {
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = '<h3>Boletim de Plantonistas</h3>' + 
+                plantonistas.map(p => `<p>${p.nome} - Turno: ${p.turno} - Dia: ${p.dia}</p>`).join('');
+        } else {
+            const { dia, mes, ano } = obterDataFormatada();
+            const dados = plantonistas.map(p => ({ nome: p.nome, turno: p.turno, dia: p.dia }));
+
+            switch (acao) {
+                case 'pdf':
+                    exportarParaPDF(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Plantonistas');
+                    break;
+                case 'txt':
+                    exportarParaTXT(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Plantonistas');
+                    break;
+                case 'csv':
+                    exportarParaCSV(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Plantonistas');
+                    break;
+                case 'excel':
+                    exportarParaExcel(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Plantonistas');
+                    break;
+            }
+        }
     }
 
-    function verBoletimAtendimentos() {
+    function gerarBoletimAtendimentos(acao) {
         const atendimentos = obterDadosAtendimentos();
-        const resultadoDiv = document.getElementById('resultado');
-        resultadoDiv.innerHTML = '<h3>Boletim de Atendimentos do Dia</h3>' + 
-            atendimentos.map(a => `<p>Data: ${a.data}, Paciente: ${a.paciente}, Queixa: ${a.queixa}</p>`).join('');
+        
+        if (acao === 'tela') {
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = '<h3>Boletim de Atendimentos do Dia</h3>' + 
+                atendimentos.map(a => `<p>Data: ${a.data}, Paciente: ${a.paciente}, Queixa: ${a.queixa}</p>`).join('');
+        } else {
+            const { dia, mes, ano } = obterDataFormatada();
+            const dados = atendimentos.map(a => ({ data: a.data, paciente: a.paciente, queixa: a.queixa }));
+
+            switch (acao) {
+                case 'pdf':
+                    exportarParaPDF(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Atendimentos');
+                    break;
+                case 'txt':
+                    exportarParaTXT(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Atendimentos');
+                    break;
+                case 'csv':
+                    exportarParaCSV(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Atendimentos');
+                    break;
+                case 'excel':
+                    exportarParaExcel(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Atendimentos');
+                    break;
+            }
+        }
     }
 
-    function verBoletimIntercorrencias() {
-        const atendimentos = obterDadosAtendimentos();
-        const intercorrencias = atendimentos.filter(a => a.tipo === 'intercorrencia');
-        const resultadoDiv = document.getElementById('resultado');
-        resultadoDiv.innerHTML = '<h3>Boletim de Intercorrências</h3>' + 
-            intercorrencias.map(i => `<p>Data: ${i.data}, Paciente: ${i.paciente}, Descrição: ${i.queixa}</p>`).join('');
+    function gerarBoletimIntercorrencias(acao) {
+        const atendimentos = obterDadosAtendimentos().filter(a => a.tipo === 'intercorrencia');
+
+        if (acao === 'tela') {
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = '<h3>Boletim de Intercorrências</h3>' + 
+                atendimentos.map(i => `<p>Data: ${i.data}, Paciente: ${i.paciente}, Descrição: ${i.queixa}</p>`).join('');
+        } else {
+            const { dia, mes, ano } = obterDataFormatada();
+            const dados = atendimentos.map(i => ({ data: i.data, paciente: i.paciente, queixa: i.queixa }));
+
+            switch (acao) {
+                case 'pdf':
+                    exportarParaPDF(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Intercorrências');
+                    break;
+                case 'txt':
+                    exportarParaTXT(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Intercorrências');
+                    break;
+                case 'csv':
+                    exportarParaCSV(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Intercorrências');
+                    break;
+                case 'excel':
+                    exportarParaExcel(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Intercorrências');
+                    break;
+            }
+        }
     }
 
     function obterDataFormatada() {
@@ -119,38 +181,24 @@
         return { dia, mes, ano, formatada: `${dia}_${mes}_${ano}` };
     }
 
-    function exportarParaPDF() {
+    function exportarParaPDF(dados, cabecalho, tipo) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        const { dia, mes, ano } = obterDataFormatada();
-        const tipo = document.getElementById('tipoBoletim').value;
-
-        doc.text(`Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 10, 10, { bold: true });
+        doc.text(cabecalho, 10, 10, { bold: true });
         doc.text(`Tipo de boletim solicitado: ${tipo}`, 10, 20);
         doc.text("HUPE - UERJ", 10, 30);
-        doc.text("Dados dos atendimentos:", 10, 40);
+        doc.text("Dados:", 10, 40);
 
-        const atendimentos = obterDadosAtendimentos();
-        atendimentos.forEach((a, index) => {
-            if (a.data && a.paciente && a.queixa) { // Verifica se os dados estão definidos
-                doc.text(`Data: ${a.data}, Paciente: ${a.paciente}, Queixa: ${a.queixa}`, 10, 50 + (index * 10));
-            }
+        dados.forEach((item, index) => {
+            doc.text(`Data: ${item.data || 'N/A'}, Paciente: ${item.paciente || 'N/A'}, Queixa: ${item.queixa || 'N/A'}`, 10, 50 + (index * 10));
         });
 
         doc.save(`Boletim_HUPE_${obterDataFormatada().formatada}.pdf`);
     }
 
-    function exportarParaTXT() {
-        const atendimentos = obterDadosAtendimentos();
-        const { dia, mes, ano } = obterDataFormatada();
-        let dadosBoletins = `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})\nTipo de boletim solicitado: ${document.getElementById('tipoBoletim').value}\nHUPE - UERJ\n\n`;
-
-        dadosBoletins += atendimentos.map(item => {
-            if (item.data && item.paciente && item.queixa) { // Verifica se os dados estão definidos
-                return `Data: ${item.data}, Paciente: ${item.paciente}, Queixa: ${item.queixa}`;
-            }
-            return ''; // Retorna uma string vazia se os dados não estiverem definidos
-        }).join("\n");
+    function exportarParaTXT(dados, cabecalho, tipo) {
+        let dadosBoletins = `${cabecalho}\nTipo de boletim solicitado: ${tipo}\nHUPE - UERJ\n\n`;
+        dadosBoletins += dados.map(item => `Data: ${item.data || 'N/A'}, Paciente: ${item.paciente || 'N/A'}, Queixa: ${item.queixa || 'N/A'}`).join("\n");
         
         const blob = new Blob([dadosBoletins], { type: "text/plain;charset=utf-8" });
         const link = document.createElement("a");
@@ -161,18 +209,11 @@
         document.body.removeChild(link);
     }
 
-    function exportarParaCSV() {
-        const atendimentos = obterDadosAtendimentos();
-        const { dia, mes, ano } = obterDataFormatada();
-        let csvContent = `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})\nTipo de boletim solicitado: ${document.getElementById('tipoBoletim').value}\nHUPE - UERJ\n\n`;
+    function exportarParaCSV(dados, cabecalho, tipo) {
+        let csvContent = `${cabecalho}\nTipo de boletim solicitado: ${tipo}\nHUPE - UERJ\n\n`;
         csvContent += "Data,Paciente,Queixa\n"; // Cabeçalho CSV
 
-        csvContent += atendimentos.map(item => {
-            if (item.data && item.paciente && item.queixa) { // Verifica se os dados estão definidos
-                return `${item.data},${item.paciente},${item.queixa}`;
-            }
-            return ''; // Retorna uma string vazia se os dados não estiverem definidos
-        }).join("\n");
+        csvContent += dados.map(item => `${item.data || 'N/A'},${item.paciente || 'N/A'},${item.queixa || 'N/A'}`).join("\n");
         
         const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);
         const link = document.createElement("a");
@@ -183,12 +224,10 @@
         document.body.removeChild(link);
     }
 
-    function exportarParaExcel() {
-        const atendimentos = obterDadosAtendimentos();
-        const { dia, mes, ano } = obterDataFormatada();
-        const ws = XLSX.utils.json_to_sheet(atendimentos.filter(item => item.data && item.paciente && item.queixa)); // Filtra dados válidos
+    function exportarParaExcel(dados, cabecalho, tipo) {
+        const ws = XLSX.utils.json_to_sheet(dados);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Atendimentos");
+        XLSX.utils.book_append_sheet(wb, ws, "Dados");
         XLSX.writeFile(wb, `Boletim_HUPE_${obterDataFormatada().formatada}.xlsx`);
     }
 </script>
