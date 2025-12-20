@@ -48,25 +48,13 @@
 <h1>Boletins de Plantonistas e Atendimentos</h1>
 <div class="module">
     <h2>Boletim de Plantonistas</h2>
-    <button onclick="gerarBoletimPlantonistas('tela')">Ver na Tela</button>
-    <button onclick="gerarBoletimPlantonistas('pdf')">Gerar PDF</button>
-    <button onclick="gerarBoletimPlantonistas('txt')">Gerar TXT</button>
-    <button onclick="gerarBoletimPlantonistas('csv')">Gerar CSV</button>
-    <button onclick="gerarBoletimPlantonistas('excel')">Gerar Excel</button>
+    <button onclick="selecionarTipoPlantonista()">Produzir Boletim</button>
 
     <h2>Boletim de Atendimentos do Dia</h2>
-    <button onclick="gerarBoletimAtendimentos('tela')">Ver na Tela</button>
-    <button onclick="gerarBoletimAtendimentos('pdf')">Gerar PDF</button>
-    <button onclick="gerarBoletimAtendimentos('txt')">Gerar TXT</button>
-    <button onclick="gerarBoletimAtendimentos('csv')">Gerar CSV</button>
-    <button onclick="gerarBoletimAtendimentos('excel')">Gerar Excel</button>
+    <button onclick="gerarBoletimAtendimentos()">Produzir Boletim</button>
 
     <h2>Boletim de Intercorrências</h2>
-    <button onclick="gerarBoletimIntercorrencias('tela')">Ver na Tela</button>
-    <button onclick="gerarBoletimIntercorrencias('pdf')">Gerar PDF</button>
-    <button onclick="gerarBoletimIntercorrencias('txt')">Gerar TXT</button>
-    <button onclick="gerarBoletimIntercorrencias('csv')">Gerar CSV</button>
-    <button onclick="gerarBoletimIntercorrencias('excel')">Gerar Excel</button>
+    <button onclick="gerarBoletimIntercorrencias()">Produzir Boletim</button>
 
     <button onclick="voltar()">Voltar</button> <!-- Botão Voltar -->
 </div>
@@ -88,39 +76,53 @@
         window.location.href = 'index.html'; // Redireciona para index.html
     }
 
-    function gerarBoletimPlantonistas(acao) {
-        const plantonistas = obterDadosPlantonistas();
-        const tipo = document.getElementById('tipoBoletim').value;
-        
-        if (acao === 'tela') {
+    function selecionarTipoPlantonista() {
+        const tipo = prompt("Selecione o tipo de boletim:\n1. 12h\n2. 24h");
+        if (tipo === "1") {
+            gerarBoletimPlantonistas("12h");
+        } else if (tipo === "2") {
+            gerarBoletimPlantonistas("24h");
+        } else {
+            alert("Opção inválida! Por favor, escolha 1 ou 2.");
+        }
+    }
+
+    function gerarBoletimPlantonistas(turno) {
+        const plantonistas = obterDadosPlantonistas().filter(p => p.turno === turno);
+        const formato = prompt("Escolha o formato de exibição:\n1. Tela\n2. PDF\n3. TXT\n4. CSV\n5. Excel");
+
+        if (formato === "1") {
             const resultadoDiv = document.getElementById('resultado');
-            resultadoDiv.innerHTML = '<h3>Boletim de Plantonistas</h3>' + 
+            resultadoDiv.innerHTML = '<h3>Boletim de Plantonistas (' + turno + ')</h3>' + 
                 plantonistas.map(p => `<p>${p.nome} - Turno: ${p.turno} - Dia: ${p.dia}</p>`).join('');
         } else {
             const { dia, mes, ano } = obterDataFormatada();
             const dados = plantonistas.map(p => ({ nome: p.nome, turno: p.turno, dia: p.dia }));
 
-            switch (acao) {
-                case 'pdf':
+            switch (formato) {
+                case "2":
                     exportarParaPDF(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Plantonistas');
                     break;
-                case 'txt':
+                case "3":
                     exportarParaTXT(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Plantonistas');
                     break;
-                case 'csv':
+                case "4":
                     exportarParaCSV(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Plantonistas');
                     break;
-                case 'excel':
+                case "5":
                     exportarParaExcel(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Plantonistas');
                     break;
+                default:
+                    alert("Formato inválido! Por favor, escolha uma opção válida.");
             }
         }
     }
 
-    function gerarBoletimAtendimentos(acao) {
+    function gerarBoletimAtendimentos() {
         const atendimentos = obterDadosAtendimentos();
-        
-        if (acao === 'tela') {
+        const formato = prompt("Escolha o formato de exibição:\n1. Tela\n2. PDF\n3. TXT\n4. CSV\n5. Excel");
+
+        if (formato === "1") {
             const resultadoDiv = document.getElementById('resultado');
             resultadoDiv.innerHTML = '<h3>Boletim de Atendimentos do Dia</h3>' + 
                 atendimentos.map(a => `<p>Data: ${a.data}, Paciente: ${a.paciente}, Queixa: ${a.queixa}</p>`).join('');
@@ -128,27 +130,30 @@
             const { dia, mes, ano } = obterDataFormatada();
             const dados = atendimentos.map(a => ({ data: a.data, paciente: a.paciente, queixa: a.queixa }));
 
-            switch (acao) {
-                case 'pdf':
+            switch (formato) {
+                case "2":
                     exportarParaPDF(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Atendimentos');
                     break;
-                case 'txt':
+                case "3":
                     exportarParaTXT(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Atendimentos');
                     break;
-                case 'csv':
+                case "4":
                     exportarParaCSV(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Atendimentos');
                     break;
-                case 'excel':
+                case "5":
                     exportarParaExcel(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Atendimentos');
                     break;
+                default:
+                    alert("Formato inválido! Por favor, escolha uma opção válida.");
             }
         }
     }
 
-    function gerarBoletimIntercorrencias(acao) {
+    function gerarBoletimIntercorrencias() {
         const atendimentos = obterDadosAtendimentos().filter(a => a.tipo === 'intercorrencia');
+        const formato = prompt("Escolha o formato de exibição:\n1. Tela\n2. PDF\n3. TXT\n4. CSV\n5. Excel");
 
-        if (acao === 'tela') {
+        if (formato === "1") {
             const resultadoDiv = document.getElementById('resultado');
             resultadoDiv.innerHTML = '<h3>Boletim de Intercorrências</h3>' + 
                 atendimentos.map(i => `<p>Data: ${i.data}, Paciente: ${i.paciente}, Descrição: ${i.queixa}</p>`).join('');
@@ -156,19 +161,21 @@
             const { dia, mes, ano } = obterDataFormatada();
             const dados = atendimentos.map(i => ({ data: i.data, paciente: i.paciente, queixa: i.queixa }));
 
-            switch (acao) {
-                case 'pdf':
+            switch (formato) {
+                case "2":
                     exportarParaPDF(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Intercorrências');
                     break;
-                case 'txt':
+                case "3":
                     exportarParaTXT(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Intercorrências');
                     break;
-                case 'csv':
+                case "4":
                     exportarParaCSV(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Intercorrências');
                     break;
-                case 'excel':
+                case "5":
                     exportarParaExcel(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Intercorrências');
                     break;
+                default:
+                    alert("Formato inválido! Por favor, escolha uma opção válida.");
             }
         }
     }
