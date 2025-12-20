@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
+    <title>Cadastro de Plantonista</title>
     <link rel="stylesheet" href="styles.css"> <!-- Incluindo o CSS comum -->
     <style>
         /* Estilos específicos para o cadastro.html */
@@ -30,7 +30,7 @@
             margin: 10px 0 5px; /* Margem ao redor dos labels */
         }
 
-        input[type="text"], input[type="date"], input[type="number"], select {
+        input[type="text"], select {
             width: 100%; /* Campo ocupa toda a largura */
             padding: 10px;
             margin-bottom: 15px; /* Margem inferior para espaçamento */
@@ -62,29 +62,40 @@
 <body>
 
 <div class="module">
-    <h1>Cadastro de Paciente</h1>
+    <h1>Cadastro de Plantonista</h1>
     <form id="formCadastro">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" required>
 
-        <label for="dataNascimento">Data de Nascimento:</label>
-        <input type="date" id="dataNascimento" required>
-
-        <label for="cpf">CPF:</label>
-        <input type="text" id="cpf" required>
-
-        <label for="telefone">Telefone:</label>
-        <input type="text" id="telefone" required>
-
-        <label for="endereco">Endereço:</label>
-        <input type="text" id="endereco" required>
-
-        <label for="genero">Gênero:</label>
-        <select id="genero" required>
+        <label for="categoria">Categoria:</label>
+        <select id="categoria" required>
             <option value="">Selecione</option>
-            <option value="masculino">Masculino</option>
-            <option value="feminino">Feminino</option>
-            <option value="outro">Outro</option>
+            <option value="interno_5">Interno 5º ano</option>
+            <option value="interno_6">Interno 6º ano</option>
+            <option value="staff">Staff</option>
+            <option value="residente">Residente</option>
+        </select>
+
+        <label for="telefone">Telefone (DD-XXXXX-XXXX):</label>
+        <input type="text" id="telefone" pattern="\d{2}-\d{5}-\d{4}" placeholder="21-98765-4321" required>
+
+        <label for="turno">Turno de Plantão:</label>
+        <select id="turno" required>
+            <option value="">Selecione</option>
+            <option value="12h">12h</option>
+            <option value="24h">24h</option>
+        </select>
+
+        <label for="dia">Dia do Plantão:</label>
+        <select id="dia" required>
+            <option value="">Selecione</option>
+            <option value="segunda">Segunda-feira</option>
+            <option value="terca">Terça-feira</option>
+            <option value="quarta">Quarta-feira</option>
+            <option value="quinta">Quinta-feira</option>
+            <option value="sexta">Sexta-feira</option>
+            <option value="sabado">Sábado</option>
+            <option value="domingo">Domingo</option>
         </select>
 
         <button type="submit">Cadastrar</button>
@@ -102,7 +113,7 @@
     document.getElementById('formCadastro').addEventListener('submit', function(event) {
         event.preventDefault();
         // Aqui você pode adicionar a lógica para processar o cadastro
-        alert('Paciente cadastrado com sucesso!'); // Placeholder para ação de sucesso
+        alert('Plantonista cadastrado com sucesso!'); // Placeholder para ação de sucesso
         this.reset(); // Limpa o formulário após o envio
     });
 </script>
