@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao Sistema HUPE - Plantão Geral</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: #fff;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: inline-block;
+            margin-top: 50px;
+        }
+        a {
+            display: inline-block;
+            margin: 15px 0;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #218838;
+        }
+        .info {
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Bem-vindo ao Sistema HUPE - Plantão Geral</h1>
+<div class="container">
+    <div class="info" id="dataHora"></div>
+    <div class="info" id="turno"></div>
+    
+    <p>Este sistema foi desenvolvido para facilitar a gestão dos plantonistas e atendimentos médicos no HUPE.</p>
+    <p>Selecione uma das opções abaixo para começar:</p>
+    <a href="cadastro.html">Cadastro dos Plantonistas</a>
+    <a href="atendimento.html">Solicitação de Atendimento Médico</a>
+    <a href="boletins.html">Boletins Diários</a>
+</div>
+
+<script>
+    function atualizarDataHora() {
+        const agora = new Date();
+        const opcoesData = { year: 'numeric', month: 'long', day: 'numeric' };
+        const dataFormatada = agora.toLocaleDateString('pt-BR', opcoesData);
+        const horaFormatada = agora.toLocaleTimeString('pt-BR');
+
+        document.getElementById('dataHora').innerText = `Data: ${dataFormatada} | Hora: ${horaFormatada}`;
+
+        // Determinar o turno
+        const horaAtual = agora.getHours();
+        let turno;
+        if (horaAtual >= 8 && horaAtual < 20) {
+            turno = "Turno: Plantão Diurno (08h às 20h)";
+        } else {
+            turno = "Turno: Plantão Noturno (20h às 08h)";
+        }
+        document.getElementById('turno').innerText = turno;
+    }
+
+    // Atualiza a data e a hora a cada segundo
+    setInterval(atualizarDataHora, 1000);
+    atualizarDataHora(); // Chama uma vez para não esperar 1 segundo
+</script>
+
+</body>
+</html>

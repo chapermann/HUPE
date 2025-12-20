@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro dos Plantonistas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        .module {
+            background: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="tel"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Módulo de Cadastro dos Plantonistas</h1>
+<div class="module">
+    <form id="cadastroForm">
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" required>
+            <option value="interno">Interno</option>
+            <option value="residente">Residente</option>
+            <option value="staff">Staff</option>
+        </select>
+
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" required>
+
+        <label for="telefone">Telefone (DDD):</label>
+        <input type="tel" id="telefone" required>
+
+        <label for="anoInternato">Ano do Internato (se aplicável):</label>
+        <input type="text" id="anoInternato">
+
+        <label for="dia">Dia de Plantão:</label>
+        <input type="text" id="dia" required>
+
+        <label for="turno">Turno:</label>
+        <select id="turno" required>
+            <option value="12h">12h</option>
+            <option value="24h">24h</option>
+        </select>
+
+        <button type="submit">Cadastrar Plantonista</button>
+    </form>
+    <button onclick="location.href='index.html'">Voltar</button>
+</div>
+
+<script>
+    document.getElementById('cadastroForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const tipo = document.getElementById('tipo').value;
+        const nome = document.getElementById('nome').value;
+        const telefone = document.getElementById('telefone').value;
+        const anoInternato = document.getElementById('anoInternato').value;
+        const dia = document.getElementById('dia').value;
+        const turno = document.getElementById('turno').value;
+
+        alert(`Plantão Cadastrado: ${tipo} - ${nome}, Telefone: ${telefone}, Ano do Internato: ${anoInternato}, Dia: ${dia}, Turno: ${turno}`);
+    });
+</script>
+
+</body>
+</html>

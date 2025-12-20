@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitação de Atendimento Médico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        .module {
+            background: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="tel"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Módulo de Solicitação de Atendimento Médico</h1>
+<div class="module">
+    <form id="atendimentoForm">
+        <label for="pacienteTipo">Tipo de Paciente:</label>
+        <select id="pacienteTipo" required>
+            <option value="externo">Paciente Externo</option>
+            <option value="interno">Paciente Interno</option>
+            <option value="intercorrencia">Intercorrência</option>
+        </select>
+
+        <label for="nomePaciente">Nome do Paciente:</label>
+        <input type="text" id="nomePaciente" required>
+
+        <label for="prontuario">Prontuário:</label>
+        <input type="text" id="prontuario" required>
+
+        <label for="queixa">Queixa ou Demanda:</label>
+        <textarea id="queixa" maxlength="250" required></textarea>
+
+        <button type="submit">Solicitar Atendimento</button>
+    </form>
+    <button onclick="location.href='index.html'">Voltar</button>
+</div>
+
+<script>
+    document.getElementById('atendimentoForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const pacienteTipo = document.getElementById('pacienteTipo').value;
+        const nomePaciente = document.getElementById('nomePaciente').value;
+        const prontuario = document.getElementById('prontuario').value;
+        const queixa = document.getElementById('queixa').value;
+
+        alert(`Atendimento Solicitado: ${pacienteTipo} - ${nomePaciente}, Prontuário: ${prontuario}, Queixa: ${queixa}`);
+    });
+</script>
+
+</body>
+</html>

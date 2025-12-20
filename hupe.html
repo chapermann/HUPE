@@ -1,0 +1,150 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2636
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="pt-BR">\
+<head>\
+    <meta charset="UTF-8">\
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
+    <title>Sistema HUPE - Plant\'e3o Geral</title>\
+    <style>\
+        body \{\
+            font-family: Arial, sans-serif;\
+            margin: 0;\
+            padding: 20px;\
+            background-color: #f4f4f4;\
+        \}\
+        h1, h2, h3 \{\
+            color: #333;\
+        \}\
+        .module \{\
+            background: #fff;\
+            border-radius: 5px;\
+            padding: 20px;\
+            margin: 10px 0;\
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);\
+        \}\
+        label \{\
+            display: block;\
+            margin: 10px 0 5px;\
+        \}\
+        input[type="text"], input[type="tel"], textarea \{\
+            width: 100%;\
+            padding: 10px;\
+            margin-bottom: 10px;\
+            border: 1px solid #ccc;\
+            border-radius: 4px;\
+        \}\
+        button \{\
+            padding: 10px 15px;\
+            background-color: #28a745;\
+            color: white;\
+            border: none;\
+            border-radius: 5px;\
+            cursor: pointer;\
+        \}\
+    </style>\
+</head>\
+<body>\
+\
+<h1>Sistema HUPE - Plant\'e3o Geral</h1>\
+\
+<!-- M\'f3dulo de Cadastro dos Plantonistas -->\
+<div class="module">\
+    <h2>M\'f3dulo de Cadastro dos Plantonistas</h2>\
+    <form id="cadastroForm">\
+        <label for="tipo">Tipo:</label>\
+        <select id="tipo" required>\
+            <option value="interno">Interno</option>\
+            <option value="residente">Residente</option>\
+            <option value="staff">Staff</option>\
+        </select>\
+\
+        <label for="nome">Nome:</label>\
+        <input type="text" id="nome" required>\
+\
+        <label for="telefone">Telefone (DDD):</label>\
+        <input type="tel" id="telefone" required>\
+\
+        <label for="dia">Dia de Plant\'e3o:</label>\
+        <input type="text" id="dia" required>\
+\
+        <label for="turno">Turno:</label>\
+        <select id="turno" required>\
+            <option value="12h">12h</option>\
+            <option value="24h">24h</option>\
+        </select>\
+\
+        <button type="submit">Cadastrar Plantonista</button>\
+    </form>\
+</div>\
+\
+<!-- M\'f3dulo de Solicita\'e7\'e3o de Atendimento M\'e9dico -->\
+<div class="module">\
+    <h2>M\'f3dulo de Solicita\'e7\'e3o de Atendimento M\'e9dico</h2>\
+    <form id="atendimentoForm">\
+        <label for="pacienteTipo">Tipo de Paciente:</label>\
+        <select id="pacienteTipo" required>\
+            <option value="externo">Paciente Externo</option>\
+            <option value="interno">Paciente Interno</option>\
+            <option value="intercorrencia">Intercorr\'eancia</option>\
+        </select>\
+\
+        <label for="nomePaciente">Nome do Paciente:</label>\
+        <input type="text" id="nomePaciente" required>\
+\
+        <label for="prontuario">Prontu\'e1rio:</label>\
+        <input type="text" id="prontuario" required>\
+\
+        <label for="queixa">Queixa ou Demanda:</label>\
+        <textarea id="queixa" maxlength="250" required></textarea>\
+\
+        <button type="submit">Solicitar Atendimento</button>\
+    </form>\
+</div>\
+\
+<!-- M\'f3dulo de Boletins Di\'e1rios -->\
+<div class="module">\
+    <h2>M\'f3dulo de Boletins Di\'e1rios</h2>\
+    <button id="gerarBoletim">Gerar Boletim Di\'e1rio</button>\
+    <div id="boletimResultado"></div>\
+</div>\
+\
+<script>\
+    // Fun\'e7\'e3o para lidar com o cadastro de plantonistas\
+    document.getElementById('cadastroForm').addEventListener('submit', function(event) \{\
+        event.preventDefault();\
+        const tipo = document.getElementById('tipo').value;\
+        const nome = document.getElementById('nome').value;\
+        const telefone = document.getElementById('telefone').value;\
+        const dia = document.getElementById('dia').value;\
+        const turno = document.getElementById('turno').value;\
+\
+        alert(`Plant\'e3o Cadastrado: $\{tipo\} - $\{nome\}, Telefone: $\{telefone\}, Dia: $\{dia\}, Turno: $\{turno\}`);\
+    \});\
+\
+    // Fun\'e7\'e3o para lidar com solicita\'e7\'f5es de atendimento\
+    document.getElementById('atendimentoForm').addEventListener('submit', function(event) \{\
+        event.preventDefault();\
+        const pacienteTipo = document.getElementById('pacienteTipo').value;\
+        const nomePaciente = document.getElementById('nomePaciente').value;\
+        const prontuario = document.getElementById('prontuario').value;\
+        const queixa = document.getElementById('queixa').value;\
+\
+        alert(`Atendimento Solicitado: $\{pacienteTipo\} - $\{nomePaciente\}, Prontu\'e1rio: $\{prontuario\}, Queixa: $\{queixa\}`);\
+    \});\
+\
+    // Fun\'e7\'e3o para gerar boletins\
+    document.getElementById('gerarBoletim').addEventListener('click', function() \{\
+        const resultado = "Boletim gerado com sucesso!";\
+        document.getElementById('boletimResultado').innerText = resultado;\
+    \});\
+</script>\
+\
+</body>\
+</html>\
+}
