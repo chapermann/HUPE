@@ -3,79 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro dos Plantonistas</title>
+    <title>Cadastro</title>
     <link rel="stylesheet" href="styles.css"> <!-- Incluindo o CSS comum -->
+    <style>
+        /* Estilos específicos para o cadastro.html */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Cor de fundo */
+        }
+
+        .module {
+            max-width: 600px; /* Limitar a largura do módulo */
+            margin: 20px auto; /* Centralizar o módulo na página */
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center; /* Centralizar títulos */
+        }
+
+        label {
+            display: block; /* Colocar cada label em uma nova linha */
+            margin: 10px 0 5px; /* Margem ao redor dos labels */
+        }
+
+        input[type="text"], input[type="date"], input[type="number"], select {
+            width: 100%; /* Campo ocupa toda a largura */
+            padding: 10px;
+            margin-bottom: 15px; /* Margem inferior para espaçamento */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px; /* Aumentar o tamanho da fonte */
+        }
+
+        button {
+            width: 100%; /* Botão ocupa toda a largura */
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px; /* Aumentar o tamanho da fonte */
+        }
+
+        button:hover {
+            background-color: #218838; /* Efeito hover no botão */
+        }
+
+        .spacer {
+            margin-top: 20px; /* Espaço adicional para o botão Voltar */
+        }
+    </style>
 </head>
 <body>
 
-<h1>Módulo de Cadastro dos Plantonistas</h1>
 <div class="module">
-    <form id="cadastroForm">
-        <label for="tipo">Tipo de Plantonista:</label>
-        <select id="tipo" required>
-            <option value="interno_5">Interno 5o Ano</option>
-            <option value="interno_6">Interno 6o Ano</option>
-            <option value="residente">Residente</option>
-            <option value="staff">Staff</option>
-        </select>
-
+    <h1>Cadastro de Paciente</h1>
+    <form id="formCadastro">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" required>
 
-        <label for="telefone">Telefone (DD-XXXX-XXXXX):</label>
-        <input type="text" id="telefone" pattern="^\d{2}-\d{4}-\d{5}$" placeholder="Ex: 11-9876-54321" required>
+        <label for="dataNascimento">Data de Nascimento:</label>
+        <input type="date" id="dataNascimento" required>
 
-        <label for="dia">Dia de Plantão:</label>
-        <select id="dia" required>
-            <option value="segunda">Segunda-feira</option>
-            <option value="terca">Terça-feira</option>
-            <option value="quarta">Quarta-feira</option>
-            <option value="quinta">Quinta-feira</option>
-            <option value="sexta">Sexta-feira</option>
-            <option value="sabado">Sábado</option>
-            <option value="domingo">Domingo</option>
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" required>
+
+        <label for="telefone">Telefone:</label>
+        <input type="text" id="telefone" required>
+
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" required>
+
+        <label for="genero">Gênero:</label>
+        <select id="genero" required>
+            <option value="">Selecione</option>
+            <option value="masculino">Masculino</option>
+            <option value="feminino">Feminino</option>
+            <option value="outro">Outro</option>
         </select>
 
-        <label for="turno">Turno:</label>
-        <select id="turno" required>
-            <option value="12h">12h</option>
-            <option value="24h">24h</option>
-        </select>
-
-        <button type="submit">Cadastrar Plantonista</button>
+        <button type="submit">Cadastrar</button>
     </form>
-    <button onclick="location.href='index.html'">Voltar</button>
 
-    <h2>Plantonistas Cadastrados:</h2>
-    <div id="listaPlantonistas"></div>
+    <div class="spacer"></div>
+    <button onclick="voltar()">Voltar ao Index</button> <!-- Botão Voltar -->
 </div>
 
 <script>
-    function atualizarLista() {
-        const lista = JSON.parse(localStorage.getItem('plantonistas')) || [];
-        const listaDiv = document.getElementById('listaPlantonistas');
-        listaDiv.innerHTML = lista.map(p => `<p>${p.tipo}: ${p.nome}, Telefone: ${p.telefone}, Dia: ${p.dia}, Turno: ${p.turno}</p>`).join('');
+    function voltar() {
+        window.location.href = 'index.html'; // Redireciona para index.html
     }
 
-    window.onload = function() {
-        atualizarLista();
-    };
-
-    document.getElementById('cadastroForm').addEventListener('submit', function(event) {
+    document.getElementById('formCadastro').addEventListener('submit', function(event) {
         event.preventDefault();
-        const tipo = document.getElementById('tipo').value;
-        const nome = document.getElementById('nome').value;
-        const telefone = document.getElementById('telefone').value;
-        const dia = document.getElementById('dia').value;
-        const turno = document.getElementById('turno').value;
-
-        const plantonista = { tipo, nome, telefone, dia, turno };
-        const lista = JSON.parse(localStorage.getItem('plantonistas')) || [];
-        lista.push(plantonista);
-        localStorage.setItem('plantonistas', JSON.stringify(lista));
-
-        atualizarLista();
-        document.getElementById('cadastroForm').reset();
+        // Aqui você pode adicionar a lógica para processar o cadastro
+        alert('Paciente cadastrado com sucesso!'); // Placeholder para ação de sucesso
+        this.reset(); // Limpa o formulário após o envio
     });
 </script>
 
