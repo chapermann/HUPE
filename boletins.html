@@ -63,6 +63,8 @@
     <button onclick="exportarParaTXT()">Exportar como TXT</button>
     <button onclick="exportarParaCSV()">Exportar como CSV</button>
     <button onclick="exportarParaExcel()">Exportar como Excel</button>
+    
+    <button onclick="voltar()">Voltar</button> <!-- Botão Voltar -->
 </div>
 
 <div id="resultado"></div>
@@ -76,6 +78,10 @@
     // Função para obter dados de plantonistas do localStorage
     function obterDadosPlantonistas() {
         return JSON.parse(localStorage.getItem('plantonistas')) || [];
+    }
+
+    function voltar() {
+        window.location.href = 'index.html'; // Redireciona para index.html
     }
 
     function atualizarBoletim() {
@@ -119,14 +125,16 @@
         const { dia, mes, ano } = obterDataFormatada();
         const tipo = document.getElementById('tipoBoletim').value;
 
-        doc.text(`Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 10, 10);
+        doc.text(`Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 10, 10, { bold: true });
         doc.text(`Tipo de boletim solicitado: ${tipo}`, 10, 20);
         doc.text("HUPE - UERJ", 10, 30);
         doc.text("Dados dos atendimentos:", 10, 40);
 
         const atendimentos = obterDadosAtendimentos();
         atendimentos.forEach((a, index) => {
-            doc.text(`Data: ${a.data}, Paciente: ${a.paciente}, Queixa: ${a.queixa}`, 10, 50 + (index * 10));
+            if (a.data && a.paciente && a.queixa) { // Verifica se os dados estão definidos
+                doc.text(`Data: ${a.data}, Paciente: ${a.paciente}, Queixa: ${a.queixa}`, 10, 50 + (index * 10));
+            }
         });
 
         doc.save(`Boletim_HUPE_${obterDataFormatada().formatada}.pdf`);
@@ -137,7 +145,13 @@
         const { dia, mes, ano } = obterDataFormatada();
         let dadosBoletins = `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})\nTipo de boletim solicitado: ${document.getElementById('tipoBoletim').value}\nHUPE - UERJ\n\n`;
 
-        dadosBoletins += atendimentos.map(item => `Data: ${item.data}, Paciente: ${item.paciente}, Queixa: ${item.queixa}`).join("\n");
+        dadosBoletins += atendimentos.map(item => {
+            if (item.data && item.paciente && item.queixa) { // Verifica se os dados estão definidos
+                return `Data: ${item.data}, Paciente: ${item.paciente}, Queixa: ${item.queixa}`;
+            }
+            return ''; // Retorna uma string vazia se os dados não estiverem definidos
+        }).join("\n");
+        
         const blob = new Blob([dadosBoletins], { type: "text/plain;charset=utf-8" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
@@ -153,7 +167,13 @@
         let csvContent = `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})\nTipo de boletim solicitado: ${document.getElementById('tipoBoletim').value}\nHUPE - UERJ\n\n`;
         csvContent += "Data,Paciente,Queixa\n"; // Cabeçalho CSV
 
-        csvContent += atendimentos.map(item => `${item.data},${item.paciente},${item.queixa}`).join("\n");
+        csvContent += atendimentos.map(item => {
+            if (item.data && item.paciente && item.queixa) { // Verifica se os dados estão definidos
+                return `${item.data},${item.paciente},${item.queixa}`;
+            }
+            return ''; // Retorna uma string vazia se os dados não estiverem definidos
+        }).join("\n");
+        
         const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
@@ -166,7 +186,7 @@
     function exportarParaExcel() {
         const atendimentos = obterDadosAtendimentos();
         const { dia, mes, ano } = obterDataFormatada();
-        const ws = XLSX.utils.json_to_sheet(atendimentos);
+        const ws = XLSX.utils.json_to_sheet(atendimentos.filter(item => item.data && item.paciente && item.queixa)); // Filtra dados válidos
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Atendimentos");
         XLSX.writeFile(wb, `Boletim_HUPE_${obterDataFormatada().formatada}.xlsx`);
