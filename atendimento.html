@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitação de Atendimento Médico</title>
-    <style>
-        /* Estilos omitidos para brevidade */
-    </style>
+    <link rel="stylesheet" href="styles.css"> <!-- Incluindo o CSS comum -->
 </head>
 <body>
 
@@ -15,7 +13,7 @@
     <form id="atendimentoForm">
         <label for="pacienteTipo">Tipo de Paciente:</label>
         <select id="pacienteTipo" required>
-            <option value="externo">Paciente Externo</option>
+            <option value="externo">Paciente Externo (triagem)</option>
             <option value="interno">Paciente Interno</option>
             <option value="intercorrencia">Intercorrência</option>
         </select>
@@ -29,6 +27,9 @@
         <label for="queixa">Queixa ou Demanda:</label>
         <textarea id="queixa" maxlength="250" required></textarea>
 
+        <label for="responsavel">Responsável pelo Atendimento:</label>
+        <input type="text" id="responsavel" required>
+
         <button type="submit">Solicitar Atendimento</button>
     </form>
     <button onclick="location.href='index.html'">Voltar</button>
@@ -41,7 +42,7 @@
     function atualizarLista() {
         const lista = JSON.parse(localStorage.getItem('atendimentos')) || [];
         const listaDiv = document.getElementById('listaAtendimentos');
-        listaDiv.innerHTML = lista.map(a => `<p>${a.pacienteTipo}: ${a.nomePaciente}, Prontuário: ${a.prontuario}, Queixa: ${a.queixa}</p>`).join('');
+        listaDiv.innerHTML = lista.map(a => `<p>${a.pacienteTipo}: ${a.nomePaciente}, Prontuário: ${a.prontuario}, Queixa: ${a.queixa}, Responsável: ${a.responsavel}</p>`).join('');
     }
 
     window.onload = function() {
@@ -54,8 +55,9 @@
         const nomePaciente = document.getElementById('nomePaciente').value;
         const prontuario = document.getElementById('prontuario').value;
         const queixa = document.getElementById('queixa').value;
+        const responsavel = document.getElementById('responsavel').value;
 
-        const atendimento = { pacienteTipo, nomePaciente, prontuario, queixa };
+        const atendimento = { pacienteTipo, nomePaciente, prontuario, queixa, responsavel };
         const lista = JSON.parse(localStorage.getItem('atendimentos')) || [];
         lista.push(atendimento);
         localStorage.setItem('atendimentos', JSON.stringify(lista));
