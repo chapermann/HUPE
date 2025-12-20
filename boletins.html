@@ -112,12 +112,20 @@
             listaIntercorrencias.map(i => `<p>Data: ${i.data}, Paciente: ${i.paciente}, Descrição: ${i.descricao}</p>`).join('');
     }
 
+    function obterDataFormatada() {
+        const dataAtual = new Date();
+        const dia = String(dataAtual.getDate()).padStart(2, '0');
+        const mes = String(dataAtual.getMonth() + 1).padStart(2, '0'); // Janeiro é 0
+        const ano = dataAtual.getFullYear();
+        return `${dia}_${mes}_${ano}`;
+    }
+
     function exportarParaPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         doc.text("Boletins Diários", 10, 10);
         // Adicione aqui os dados que deseja incluir no PDF
-        doc.save("boletins.pdf");
+        doc.save(`Boletim_HUPE_${obterDataFormatada()}.pdf`);
     }
 
     function exportarParaTXT() {
@@ -125,7 +133,7 @@
         const blob = new Blob([dadosBoletins], { type: "text/plain;charset=utf-8" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = "boletins.txt";
+        link.download = `Boletim_HUPE_${obterDataFormatada()}.txt`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -137,7 +145,7 @@
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "boletins.csv");
+        link.setAttribute("download", `Boletim_HUPE_${obterDataFormatada()}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -147,7 +155,7 @@
         const ws = XLSX.utils.json_to_sheet(listaAtendimentos);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Atendimentos");
-        XLSX.writeFile(wb, "boletins.xlsx");
+        XLSX.writeFile(wb, `Boletim_HUPE_${obterDataFormatada()}.xlsx`);
     }
 </script>
 
