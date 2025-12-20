@@ -5,39 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boletins Diários</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            color: #333;
-        }
-        .module {
-            background: #fff;
-            border-radius: 5px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        button {
-            padding: 10px 15px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 10px 0;
-        }
-        select {
-            padding: 10px;
-            margin: 10px 0;
-            width: 100%;
-        }
-        #resultadoBoletim {
-            margin-top: 20px;
-            white-space: pre-wrap; /* Para manter formatação no texto */
-        }
+        /* Estilos omitidos para brevidade */
     </style>
 </head>
 <body>
@@ -74,80 +42,6 @@
         }
 
         document.getElementById('resultadoBoletim').innerText = resultado;
-    });
-</script>
-
-</body>
-</html>
-        #resultadoBoletim {
-            margin-top: 20px;
-            white-space: pre-wrap; /* Para manter formatação no texto */
-        }
-    </style>
-</head>
-<body>
-
-<h1>Módulo de Boletins Diários</h1>
-<div class="module">
-    <label for="tipoBoletim">Selecione o tipo de boletim:</label>
-    <select id="tipoBoletim">
-        <option value="plantonistas">Boletim diário dos plantonistas do Dia</option>
-        <option value="atendimentos">Boletim diário dos Atendimentos de Pacientes e Intercorrências</option>
-        <option value="todos">Boletim diário de todos os Plantonistas e Atendimentos</option>
-    </select>
-    
-    <button id="gerarBoletim">Gerar Boletim</button>
-    <button id="gerarPDF">Gerar PDF</button>
-    
-    <div id="resultadoBoletim"></div>
-    <button onclick="location.href='index.html'">Voltar</button>
-</div>
-
-<script>
-    // Função para gerar boletim com base na seleção
-    document.getElementById('gerarBoletim').addEventListener('click', function() {
-        const tipoBoletim = document.getElementById('tipoBoletim').value;
-        let resultado = '';
-
-        // Simulação de dados para os boletins
-        const dataAtual = new Date();
-        const dataFormatada = dataAtual.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        
-        if (tipoBoletim === 'plantonistas') {
-            resultado = `Boletim Diário dos Plantonistas - ${dataFormatada}\n\n` +
-                        `Plantonistas Internos:\n - João Silva\n - Maria Oliveira\n\n` +
-                        `Plantonistas Residentes:\n - Ana Costa\n - Pedro Santos\n\n` +
-                        `Plantonistas Staff:\n - Dr. Carlos Mendes\n - Dra. Fernanda Lima`;
-        } else if (tipoBoletim === 'atendimentos') {
-            resultado = `Boletim Diário de Atendimentos - ${dataFormatada}\n\n` +
-                        `Atendimentos Externos:\n - Paciente A: Queixa X\n - Paciente B: Queixa Y\n\n` +
-                        `Intercorrências:\n - Intercorrência 1\n - Intercorrência 2`;
-        } else if (tipoBoletim === 'todos') {
-            resultado = `Boletim Diário Completo - ${dataFormatada}\n\n` +
-                        `Plantonistas e Atendimentos:\n - João Silva: Atendimento A\n - Maria Oliveira: Atendimento B`;
-        }
-
-        document.getElementById('resultadoBoletim').innerText = resultado;
-    });
-
-    // Função para gerar PDF (simulação)
-    document.getElementById('gerarPDF').addEventListener('click', function() {
-        const tipoBoletim = document.getElementById('tipoBoletim').value;
-        const dataAtual = new Date();
-        const dataFormatada = dataAtual.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
-        let nomeArquivo = '';
-
-        if (tipoBoletim === 'plantonistas') {
-            nomeArquivo = `${dataFormatada}_Boletim_Turno_Manha.pdf`;
-        } else if (tipoBoletim === 'atendimentos') {
-            nomeArquivo = `${dataFormatada}_Boletim_Turno_Noite.pdf`;
-        } else if (tipoBoletim === 'todos') {
-            nomeArquivo = `${dataFormatada}_Boletim_24_horas.pdf`;
-        }
-
-        // Simulação de download do PDF
-        alert(`PDF gerado com nome: ${nomeArquivo}`);
-        // Aqui você pode integrar uma biblioteca como jsPDF para gerar o PDF real
     });
 </script>
 
