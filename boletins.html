@@ -3,58 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boletins Diários</title>
+    <title>Exportar Boletins</title>
     <link rel="stylesheet" href="styles.css"> <!-- Incluindo o CSS comum -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
-<h1>Módulo de Boletins Diários</h1>
+<h1>Exportar Dados do Boletim</h1>
 <div class="module">
-    <label for="tipoBoletim">Selecione o tipo de boletim:</label>
-    <select id="tipoBoletim">
-        <option value="plantonistas">Boletim de Plantonistas</option>
-        <option value="atendimentos">Boletim de Atendimentos</option>
-        <option value="intercorrencias">Boletim de Intercorrências</option>
-    </select>
-    
-    <button id="gerarBoletim">Gerar Boletim</button>
-    <div id="resultadoBoletim"></div>
-    <button onclick="location.href='index.html'">Voltar</button>
+    <button onclick="exportarParaPDF()">Exportar como PDF</button>
+    <button onclick="exportarParaTXT()">Exportar como TXT</button>
+    <button onclick="exportarParaCSV()">Exportar como CSV</button>
+    <button onclick="exportarParaExcel()">Exportar como Excel</button>
 </div>
 
 <script>
-    document.getElementById('gerarBoletim').addEventListener('click', function() {
-        const tipoBoletim = document.getElementById('tipoBoletim').value;
-        const plantonistas = JSON.parse(localStorage.getItem('plantonistas')) || [];
-        const atendimentos = JSON.parse(localStorage.getItem('atendimentos')) || [];
-        let resultado = `Boletim Diário - ${tipoBoletim}:\n\n`;
+    // Exemplo de dados do boletim (substitua pelo seu array real)
+    const listaBoletins = [
+        { data: "2025-12-20", paciente: "João Silva", queixa: "Dor de cabeça" },
+        { data: "2025-12-21", paciente: "Maria Oliveira", queixa: "Febre" },
+        // Adicione mais entradas conforme necessário
+    ];
 
-        if (tipoBoletim === 'plantonistas') {
-            resultado += 'Plantonistas:\n';
-            if (plantonistas.length === 0) {
-                resultado += 'Nenhum plantonista cadastrado.\n';
-            } else {
-                plantonistas.forEach(p => {
-                    resultado += `${p.tipo}: ${p.nome}, Telefone: ${p.telefone}, Ano do Internato: ${p.anoInternato}, Dia: ${p.dia}, Turno: ${p.turno}\n`;
-                });
-            }
-        } else if (tipoBoletim === 'atendimentos') {
-            resultado += 'Atendimentos:\n';
-            if (atendimentos.length === 0) {
-                resultado += 'Nenhum atendimento solicitado.\n';
-            } else {
-                atendimentos.forEach(a => {
-                    resultado += `${a.pacienteTipo}: ${a.nomePaciente}, Prontuário: ${a.prontuario}, Queixa: ${a.queixa}\n`;
-                });
-            }
-        } else if (tipoBoletim === 'intercorrencias') {
-            resultado += 'Intercorrências:\n';
-            // Aqui você pode adicionar lógica para listar intercorrências se houver.
-            resultado += 'Nenhuma intercorrência registrada.\n'; // Placeholder
-        }
+    // Função para exportar para PDF
+    function exportarParaPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("Boletins Diários", 10, 10);
+        listaBoletins.forEach((item, index) => {
+            doc.text(`Data: ${item.data}, Paciente: ${item.paciente}, Queixa: ${item.queixa}`, 10, 20 + (index * 10));
+        });
+        doc.save("boletins.pdf");
+    }
 
-        document.getElementById('resultadoBoletim').innerText = resultado;
-    });
+    // Função para exportar para TXT
+    function exportarParaTXT() {
+        const dadosBoletins = listaBoletins.map(item => `Data: ${item.data}, Paciente: ${item.paciente}, Queixa: ${item.queixa}`).join("\n");
+        const blob = new Blob([dadosBoletins], { type: "text/plain;charset=utf-8" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "boletins.txt";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // Função para exportar para CSV
+    function exportarParaCSV() {
+        const csvContent = "data:text/csv;charset=utf-8," + 
+            listaBoletins.map(item => `${item.data},${item.paciente},${item.queixa}`).join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "boletins.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // Função para exportar para Excel
+    function exportarParaExcel() {
+        const ws = XLSX.utils.json_to_sheet(listaBoletins);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Boletins");
+        XLSX.writeFile(wb, "boletins.xlsx");
+    }
 </script>
 
 </body>
