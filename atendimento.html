@@ -66,6 +66,76 @@
         <button type="submit">Solicitar Atendimento</button>
     </form>
     <button onclick="location.href='index.html'">Voltar</button>
+
+    <h2>Atendimentos Solicitados:</h2>
+    <div id="listaAtendimentos"></div>
+</div>
+
+<script>
+    // Função para atualizar a lista de atendimentos
+    function atualizarLista() {
+        const lista = JSON.parse(localStorage.getItem('atendimentos')) || [];
+        const listaDiv = document.getElementById('listaAtendimentos');
+        listaDiv.innerHTML = lista.map(a => `<p>${a.pacienteTipo}: ${a.nomePaciente}, Prontuário: ${a.prontuario}, Queixa: ${a.queixa}</p>`).join('');
+    }
+
+    // Carregar dados do localStorage ao abrir a página
+    window.onload = function() {
+        atualizarLista();
+    };
+
+    // Adicionar evento de submit no formulário
+    document.getElementById('atendimentoForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const pacienteTipo = document.getElementById('pacienteTipo').value;
+        const nomePaciente = document.getElementById('nomePaciente').value;
+        const prontuario = document.getElementById('prontuario').value;
+        const queixa = document.getElementById('queixa').value;
+
+        const atendimento = { pacienteTipo, nomePaciente, prontuario, queixa };
+        const lista = JSON.parse(localStorage.getItem('atendimentos')) || [];
+        lista.push(atendimento);
+        localStorage.setItem('atendimentos', JSON.stringify(lista));
+
+        atualizarLista();
+        document.getElementById('atendimentoForm').reset(); // Limpar o formulário
+    });
+</script>
+
+</body>
+</html>
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Módulo de Solicitação de Atendimento Médico</h1>
+<div class="module">
+    <form id="atendimentoForm">
+        <label for="pacienteTipo">Tipo de Paciente:</label>
+        <select id="pacienteTipo" required>
+            <option value="externo">Paciente Externo</option>
+            <option value="interno">Paciente Interno</option>
+            <option value="intercorrencia">Intercorrência</option>
+        </select>
+
+        <label for="nomePaciente">Nome do Paciente:</label>
+        <input type="text" id="nomePaciente" required>
+
+        <label for="prontuario">Prontuário:</label>
+        <input type="text" id="prontuario" required>
+
+        <label for="queixa">Queixa ou Demanda:</label>
+        <textarea id="queixa" maxlength="250" required></textarea>
+
+        <button type="submit">Solicitar Atendimento</button>
+    </form>
+    <button onclick="location.href='index.html'">Voltar</button>
 </div>
 
 <script>
