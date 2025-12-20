@@ -22,7 +22,7 @@
             text-align: center; /* Centralizar títulos */
         }
 
-        button {
+        button, select {
             width: 100%; /* Botão ocupa toda a largura */
             padding: 10px;
             background-color: #28a745;
@@ -31,9 +31,10 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 10px; /* Margem superior para o botão */
+            font-size: 16px; /* Aumentar o tamanho da fonte */
         }
 
-        button:hover {
+        button:hover, select:hover {
             background-color: #218838; /* Efeito hover no botão */
         }
 
@@ -52,7 +53,27 @@
 <h1>Boletins de Plantonistas e Atendimentos</h1>
 <div class="module">
     <h2>Boletim de Plantonistas</h2>
-    <button onclick="selecionarTipoPlantonista()">Produzir Boletim</button>
+    
+    <div>
+        <label for="turnoPlantonista">Escolha o Turno:</label>
+        <select id="turnoPlantonista">
+            <option value="12h">12h</option>
+            <option value="24h">24h</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="formatoPlantonista">Formato de Exibição:</label>
+        <select id="formatoPlantonista">
+            <option value="tela">Tela</option>
+            <option value="pdf">PDF</option>
+            <option value="txt">TXT</option>
+            <option value="csv">CSV</option>
+            <option value="excel">Excel</option>
+        </select>
+    </div>
+
+    <button onclick="gerarBoletimPlantonistas()">Produzir Boletim</button>
 
     <h2>Boletim de Atendimentos do Dia</h2>
     <button onclick="gerarBoletimAtendimentos()">Produzir Boletim</button>
@@ -81,26 +102,12 @@
         window.location.href = 'index.html'; // Redireciona para index.html
     }
 
-    function selecionarTipoPlantonista() {
-        const tipo = prompt("Selecione o tipo de boletim:\n1. 12h\n2. 24h");
-        if (tipo === "1") {
-            escolherFormatoPlantonista("12h");
-        } else if (tipo === "2") {
-            escolherFormatoPlantonista("24h");
-        } else {
-            alert("Opção inválida! Por favor, escolha 1 ou 2.");
-        }
-    }
-
-    function escolherFormatoPlantonista(turno) {
-        const formato = prompt("Escolha o formato de exibição:\n1. Tela\n2. PDF\n3. TXT\n4. CSV\n5. Excel");
-        gerarBoletimPlantonistas(turno, formato);
-    }
-
-    function gerarBoletimPlantonistas(turno, formato) {
+    function gerarBoletimPlantonistas() {
+        const turno = document.getElementById('turnoPlantonista').value;
+        const formato = document.getElementById('formatoPlantonista').value;
         const plantonistas = obterDadosPlantonistas().filter(p => p.turno === turno);
 
-        if (formato === "1") {
+        if (formato === "tela") {
             const resultadoDiv = document.getElementById('resultado');
             resultadoDiv.innerHTML = '<h3>Boletim de Plantonistas (' + turno + ')</h3>' + 
                 plantonistas.map(p => `<p>${p.nome} - Turno: ${p.turno} - Dia: ${p.dia}</p>`).join('');
@@ -109,16 +116,16 @@
             const dados = plantonistas.map(p => ({ nome: p.nome, turno: p.turno, dia: p.dia }));
 
             switch (formato) {
-                case "2":
+                case "pdf":
                     exportarParaPDF(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Plantonistas');
                     break;
-                case "3":
+                case "txt":
                     exportarParaTXT(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Plantonistas');
                     break;
-                case "4":
+                case "csv":
                     exportarParaCSV(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Plantonistas');
                     break;
-                case "5":
+                case "excel":
                     exportarParaExcel(dados, `Boletim do Dia (${dia})/Mês (${mes})/Ano (${ano})`, 'Boletim de Plantonistas');
                     break;
                 default:
