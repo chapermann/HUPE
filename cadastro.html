@@ -11,9 +11,10 @@
 <h1>Módulo de Cadastro dos Plantonistas</h1>
 <div class="module">
     <form id="cadastroForm">
-        <label for="tipo">Tipo:</label>
+        <label for="tipo">Tipo de Plantonista:</label>
         <select id="tipo" required>
-            <option value="interno">Interno</option>
+            <option value="interno_5">Interno 5o Ano</option>
+            <option value="interno_6">Interno 6o Ano</option>
             <option value="residente">Residente</option>
             <option value="staff">Staff</option>
         </select>
@@ -23,12 +24,6 @@
 
         <label for="telefone">Telefone (DD-XXXX-XXXXX):</label>
         <input type="text" id="telefone" pattern="^\d{2}-\d{4}-\d{5}$" placeholder="Ex: 11-9876-54321" required>
-
-        <label for="anoInternato">Ano do Internato:</label>
-        <select id="anoInternato" required>
-            <option value="5o Ano">5o Ano</option>
-            <option value="6o Ano">6o Ano</option>
-        </select>
 
         <label for="dia">Dia de Plantão:</label>
         <select id="dia" required>
@@ -59,7 +54,7 @@
     function atualizarLista() {
         const lista = JSON.parse(localStorage.getItem('plantonistas')) || [];
         const listaDiv = document.getElementById('listaPlantonistas');
-        listaDiv.innerHTML = lista.map(p => `<p>${p.tipo}: ${p.nome}, Telefone: ${p.telefone}, Ano do Internato: ${p.anoInternato}, Dia: ${p.dia}, Turno: ${p.turno}</p>`).join('');
+        listaDiv.innerHTML = lista.map(p => `<p>${p.tipo}: ${p.nome}, Telefone: ${p.telefone}, Dia: ${p.dia}, Turno: ${p.turno}</p>`).join('');
     }
 
     window.onload = function() {
@@ -71,11 +66,10 @@
         const tipo = document.getElementById('tipo').value;
         const nome = document.getElementById('nome').value;
         const telefone = document.getElementById('telefone').value;
-        const anoInternato = document.getElementById('anoInternato').value;
         const dia = document.getElementById('dia').value;
         const turno = document.getElementById('turno').value;
 
-        const plantonista = { tipo, nome, telefone, anoInternato, dia, turno };
+        const plantonista = { tipo, nome, telefone, dia, turno };
         const lista = JSON.parse(localStorage.getItem('plantonistas')) || [];
         lista.push(plantonista);
         localStorage.setItem('plantonistas', JSON.stringify(lista));
