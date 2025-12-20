@@ -5,6 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitação de Atendimento Médico</title>
     <link rel="stylesheet" href="styles.css"> <!-- Incluindo o CSS comum -->
+    <style>
+        /* Estilos específicos para o atendimento.html */
+        .module {
+            max-width: 600px; /* Limitar a largura do módulo */
+            margin: 20px auto; /* Centralizar o módulo na página */
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px; /* Margem superior aumentada para espaçamento */
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px; /* Espaçamento inferior aumentado */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%; /* Botão ocupa toda a largura */
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px; /* Margem superior para o botão */
+        }
+
+        button:hover {
+            background-color: #218838; /* Efeito hover no botão */
+        }
+
+        h2 {
+            margin-top: 20px; /* Margem superior para o título da lista */
+        }
+    </style>
 </head>
 <body>
 
@@ -34,6 +77,8 @@
     </form>
     <button onclick="location.href='index.html'">Voltar</button>
 
+    <h2>Atendimentos Solicitados:</h2>
+    <div id="listaAtendimentos"></div>
 </div>
 
 <script>
